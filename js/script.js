@@ -8,9 +8,9 @@ let isProjectsVisible = true;
 
 themeButton.addEventListener("click", () => {
   if (isGreenTheme) {
-    themeStylesheet.setAttribute("href", "css/red.css");
+    themeStylesheet.setAttribute("href", "red.css");
   } else {
-    themeStylesheet.setAttribute("href", "css/green.css");
+    themeStylesheet.setAttribute("href", "green.css");
   }
 
   isGreenTheme = !isGreenTheme;
@@ -92,3 +92,23 @@ function showError(id, message) {
 function clearError(id) {
   document.getElementById(id).textContent = "";
 }
+
+fetch("data.json")
+  .then((response) => response.json())
+  .then((data) => {
+    const skillsList = document.getElementById("skillsList");
+    data.skills.forEach((skill) => {
+      const li = document.createElement("li");
+      li.textContent = skill;
+      skillsList.appendChild(li);
+    });
+
+    const projectsList = document.getElementById("projectsList");
+    data.projects.forEach((project) => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${project.name}</strong> – ${project.description} 
+        <a href="${project.url}" target="_blank" rel="noopener noreferrer">Repo</a>`;
+      projectsList.appendChild(li);
+    });
+  })
+  .catch((error) => console.error("Błąd ładowania danych:", error));
