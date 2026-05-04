@@ -137,3 +137,55 @@ footer {
   font-size: 14px;
   color: red;
 }
+
+.notes-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.notes-input input {
+  flex: 1;
+  padding: 8px 10px;
+  border: 2px solid red;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.notes-input button {
+  padding: 8px 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.notes-input button:hover {
+  background-color: darkred;
+}
+
+.note-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.delete-note {
+  background: none;
+  border: 1px solid crimson;
+  color: crimson;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+.delete-note:hover {
+  background-color: crimson;
+  color: white;
+}
