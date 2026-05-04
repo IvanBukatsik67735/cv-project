@@ -112,3 +112,46 @@ fetch("data.json")
     });
   })
   .catch((error) => console.error("Błąd ładowania danych:", error));
+
+const noteInput = document.getElementById("noteInput");
+const addNoteButton = document.getElementById("addNoteButton");
+const notesList = document.getElementById("notesList");
+
+let notes = JSON.parse(localStorage.getItem("notes")) || [];
+
+function renderNotes() {
+  notesList.innerHTML = "";
+  notes.forEach((note, index) => {
+    const li = document.createElement("li");
+    li.className = "note-item";
+    li.innerHTML = `
+      <span>${note}</span>
+      <button class="delete-note" data-index="${index}">Usuń</button>
+    `;
+    notesList.appendChild(li);
+  });
+}
+
+function saveNotes() {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+addNoteButton.addEventListener("click", () => {
+  const text = noteInput.value.trim();
+  if (!text) return;
+  notes.push(text);
+  saveNotes();
+  renderNotes();
+  noteInput.value = "";
+});
+
+notesList.addEventListener("click", (e) => {
+  if (e.target.classList.contains("delete-note")) {
+    const index = e.target.getAttribute("data-index");
+    notes.splice(index, 1);
+    saveNotes();
+    renderNotes();
+  }
+});
+
+renderNotes();
