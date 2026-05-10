@@ -8,9 +8,9 @@ let isProjectsVisible = true;
 
 themeButton.addEventListener("click", () => {
   if (isGreenTheme) {
-    themeStylesheet.setAttribute("href", "red.css");
+    themeStylesheet.setAttribute("href", "./css/red.css");
   } else {
-    themeStylesheet.setAttribute("href", "green.css");
+    themeStylesheet.setAttribute("href", "./css/green.css");
   }
 
   isGreenTheme = !isGreenTheme;
@@ -79,9 +79,37 @@ contactForm.addEventListener("submit", (e) => {
   }
 
   if (isValid) {
-    document.getElementById("successMessage").textContent =
-      "Wiadomość wysłana pomyślnie!";
-    contactForm.reset();
+    const SUPABASE_URL = "https://tjfrebydgegcuznkgeti.supabase.co";
+    const SUPABASE_KEY =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqZnJlYnlkZ2VnY3V6bmtnZXRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzOTkxNDgsImV4cCI6MjA5Mzk3NTE0OH0.14J1BLDlbfb-SuLQh1RZFFHCuXj3KTx6QEhxsUq-36M";
+    fetch(`${SUPABASE_URL}/rest/v1/messages`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        message: message,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          document.getElementById("successMessage").textContent =
+            "Wiadomość wysłana pomyślnie!";
+          contactForm.reset();
+        } else {
+          document.getElementById("successMessage").textContent =
+            "Błąd podczas wysyłania. Spróbuj ponownie.";
+        }
+      })
+      .catch(() => {
+        document.getElementById("successMessage").textContent =
+          "Błąd połączenia z serwerem.";
+      });
   }
 });
 
@@ -93,7 +121,7 @@ function clearError(id) {
   document.getElementById(id).textContent = "";
 }
 
-fetch("data.json")
+fetch("../data.json")
   .then((response) => response.json())
   .then((data) => {
     const skillsList = document.getElementById("skillsList");
